@@ -8,6 +8,20 @@ from rest_framework.pagination import PageNumberPagination
 
 # Post list and create view
 class PostListCreateView(generics.ListCreateAPIView):
+    """
+    get:
+    List all posts in descending order of creation date
+
+    - Login is required
+    - Returns the id, user, content, image, and creation date of each post
+
+    post:
+    Create a new post
+
+    - Necessary fields: content, image
+    - Login is required
+     
+    """
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -17,6 +31,33 @@ class PostListCreateView(generics.ListCreateAPIView):
 
 # Post edit and delete view
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Get a post by its id
+
+    - Login is required
+    - Returns the id, user, content, image, and creation date of the post
+
+    patch: 
+    Edit a post by its id (partial update)
+    
+    - Necessary fields: content, image
+    - Login is required
+    - Only the post's author can edit it
+
+    delete:
+    Delete a post by its id
+
+    - Login is required
+    - Only the post's author can delete it
+
+    put:
+    Edit a post by its id (full update)
+
+    - Necessary fields: content, image
+    - Login is required
+    - Only the post's author can edit it
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -26,6 +67,18 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     
 # Like and Unlike posts view
 class LikePostView(APIView):
+    """
+    post:
+    Like a post by its id
+    
+    - Login is required
+    - Returns a status message if the post is liked
+    
+    delete:
+    Unlike a post by its id
+    - Login is required
+    - Returns a status message if the post is unliked
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -43,6 +96,13 @@ class FeedPagination(PageNumberPagination):
 
 # Feed view
 class UserFeedView(generics.ListAPIView):
+    """
+    get:
+    List all posts of users that the current user is following with pagination in descending order of creation date
+    
+    - Login is required
+    - Returns the id, user, content, image, and creation date of each post
+    """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = FeedPagination

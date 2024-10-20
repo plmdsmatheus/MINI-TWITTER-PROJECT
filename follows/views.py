@@ -14,6 +14,22 @@ class FollowPagination(PageNumberPagination):
 
 # Follow and unfollow users in the API
 class FollowUserView(APIView):
+    """
+    post:
+    Follow a user by their username
+
+    - Login is required
+    - The user cannot follow themselves
+    - Returns a status message if the user is followed
+
+    delete:
+    Unfollow a user by their username
+
+    - Login is required
+    - The user cannot follow themselves
+    - Returns a status message if the user is unfollowed
+    """
+
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -29,6 +45,14 @@ class FollowUserView(APIView):
 
 # List all followers of a user
 class FollowersListView(generics.ListAPIView):
+    """"
+    get:
+    List all followers of a user by their username with pagination
+
+    - Login is required
+    - Returns a paginated list of followers
+    """
+
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = FollowPagination
@@ -38,6 +62,14 @@ class FollowersListView(generics.ListAPIView):
 
 # List all users that a user is following
 class FollowingListView(generics.ListAPIView):
+    """
+    get:
+    List all users that a user is following by their username with pagination
+
+    - Login is required
+    - Returns a paginated list of users that the user is following
+    """
+
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = FollowPagination

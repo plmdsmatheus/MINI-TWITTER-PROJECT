@@ -121,5 +121,5 @@ class UserFeedView(generics.ListAPIView):
             # Obtain the posts of the users that the current user is following in descending order of creation
             feed = Post.objects.filter(user__in=following_users).order_by('-created_at')
             # Cache the feed
-            cache.set(cache_key, feed, timeout=CACHE_TTL)
+            cache.set(cache_key, feed, timeout=settings.CACHE_TTL)
         return feed

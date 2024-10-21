@@ -13,22 +13,17 @@ To run the application, please follow the steps below. The API documentation is 
  - Python 3.12
  - django and djangorestframework
  - PostgreSQL
+ - Docker 
 
  ### Installation
 1. Clone this repository:
 
-2. Create and activate a virtual environment:
-- | python -m venv venv 
+2. Have Docker and Python installing in your computer:
 
-3. Install dependencies:
-- | pip install -r requirments.txt 
+3. Open terminal in your IDE:
+- Execute this commands: `docker-compose up --build`
 
-4. Configure the database:
-- Set up your database and update the DATABASE_URL in the environment variables or in the settings file accordingly.
-
-6. Run the application:
-
-7. Access the API documentation:
+4. Access the API documentation:
 - Open your browser and navigate to http://127.0.0.1:8000/swagger/ to view the interactive API documentation.
 
 ## Features
@@ -44,7 +39,5 @@ To run the application, please follow the steps below. The API documentation is 
 The API documentation is automatically generated and available at /swagger/. This includes all the endpoints, input parameters, and response formats to help developers interact with the API.
 
 ## Developer Notes
-
-- Ensure you have all necessary environment variables set up before running the project (e.g., DATABASE_URL, SECRET_KEY for JWT).
 
 - Tests are located in the tests/ directory and can be run using pytest.

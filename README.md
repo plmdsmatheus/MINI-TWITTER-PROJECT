@@ -22,6 +22,7 @@ To run the application, please follow the steps below. The API documentation is 
 
 3. Open terminal in your IDE:
 - Execute this commands: `docker-compose up --build`
+- The database may not be migrating, just use the `docker-compose exec web python manage.py migrate` command
 
 4. Access the API documentation:
 - Open your browser and navigate to http://127.0.0.1:8000/swagger/ to view the interactive API documentation.

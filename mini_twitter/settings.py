@@ -1,6 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
+import os
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -28,6 +29,16 @@ SWAGGER_SETTINGS = {
         }
     },
     'USE_SESSION_AUTH': False,
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}/1",
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
 
 AUTH_USER_MODEL = "users.CustomUser"

@@ -53,7 +53,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-g#aipssy2xy*+5gut9gc6ri%ehe&#_wt-)5t=w^sv_qmh3#g_f"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -63,7 +63,6 @@ ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    config("CODESPACES_URL"), # I'm using GitHub Codespaces for this project so I need to add this URL to the allowed origins
 ]
 
 # Application definition

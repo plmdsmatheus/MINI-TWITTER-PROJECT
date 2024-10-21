@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Post, Like
@@ -8,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from follows.models import Follow
 from django.core.cache import cache
 from django.conf import settings
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Post list and create view
 class PostListCreateView(generics.ListCreateAPIView):
@@ -25,9 +26,10 @@ class PostListCreateView(generics.ListCreateAPIView):
     - Login is required
      
     """
-    queryset = Post.objects.all().order_by("-created_at")
+    queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -39,13 +41,12 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     Get a post by its id
 
     - Login is required
-    - Only the post's author can view it
-    - Returns the id, user, content, creation date of the post, and the number of likes
+    - Returns the id, user, content, image, and creation date of the post
 
     patch: 
     Edit a post by its id (partial update)
     
-    - Necessary fields: content
+    - Necessary fields: content, image
     - Login is required
     - Only the post's author can edit it
 
@@ -58,7 +59,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     put:
     Edit a post by its id (full update)
 
-    - Necessary fields: content
+    - Necessary fields: content, image
     - Login is required
     - Only the post's author can edit it
     """

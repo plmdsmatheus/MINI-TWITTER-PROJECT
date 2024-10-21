@@ -24,7 +24,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
     Get the current user's information
 
     - Login is required
-    - Returns the user's id, username, email, first name, and last name
+    - Returns the user's id, username, email, first name, last name, and followers count
 
     put:
     Edit the current user's information (full update)

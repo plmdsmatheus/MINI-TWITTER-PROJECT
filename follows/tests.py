@@ -26,8 +26,8 @@ class FollowIntegrationTest(APITestCase):
 
         # User2 create a post
         self.authenticate_user(self.user2)
-        Post.objects.create(user=self.user2, content="User2's post")
-        Post.save()
+        post = Post.objects.create(user=self.user2, content="User2's post")
+        post.save()
 
         # Verify User2's post has created correctly
         self.assertEqual(Post.objects.count(), 1)
@@ -37,5 +37,5 @@ class FollowIntegrationTest(APITestCase):
         url = "/posts/feed/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertGreater(len(response.data), 1)
-        self.assertEqual(response.data[0]['content'], "User2's post")
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['content'], "User2's post")

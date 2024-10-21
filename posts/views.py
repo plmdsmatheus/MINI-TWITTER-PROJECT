@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from .models import Post, Like
 from .serializers import PostSerializer, LikeSerializer
 from rest_framework.pagination import PageNumberPagination
+from follows.models import Follow
 
 # Post list and create view
 class PostListCreateView(generics.ListCreateAPIView):
@@ -111,4 +112,4 @@ class UserFeedView(generics.ListAPIView):
         # Obtain the users that the current user is following
         following_users = Follow.objects.filter(follower=self.request.user).value_list("following", flat=True)
         # return the posts of the users that the current user is following in descending order of creation
-        return Post.objects.filter(user__in=self.request.user.following.all()).order_by("-created_at")
+        return Post.objects.filter(user__in=following_users).order_by('-created_at')

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, permissions
 from .models import Follow, CustomUser
 from .serializers import FollowSerializer
@@ -32,13 +32,15 @@ class FollowUserView(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, username, *args, **kwargs):
         user_to_follow = CustomUser.objects.get(username=username)
         if request.user != user_to_follow:
             Follow.objects.get_or_create(follower=request.user, following=user_to_follow)
-        return Response({'status': 'followed'})
+            return Response({'status': 'followed'})
+        else:
+            return Response({'status': 'You cannot follow yourself'})
     
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request, username, *args, **kwargs):
         user_to_unfollow = CustomUser.objects.get(username=username)
         Follow.objects.filter(follower=request.user, following=user_to_unfollow).delete()
         return Response({'status': 'unfollowed'})
@@ -58,7 +60,8 @@ class FollowersListView(generics.ListAPIView):
     pagination_class = FollowPagination
 
     def get_queryset(self):
-        return Follow.objects.filter(following=self.kwargs['username'])
+        user = get_object_or_404(CustomUser, username=self.kwargs['username'])
+        return Follow.objects.filter(following=user)
 
 # List all users that a user is following
 class FollowingListView(generics.ListAPIView):
@@ -75,4 +78,5 @@ class FollowingListView(generics.ListAPIView):
     pagination_class = FollowPagination
 
     def get_queryset(self):
-        return Follow.objects.filter(follower=self.kwargs['username'])
+        user = get_object_or_404(CustomUser, username=self.kwargs['username'])
+        return Follow.objects.filter(follower=user)

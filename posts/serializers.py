@@ -6,9 +6,9 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "user", "content", "image", "created_at"]
+        fields = ["user", "content", "image", "created_at"]
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ["id", "user", "post", "liked_at"]
+        fields = ["user", "post", "liked_at"]

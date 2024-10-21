@@ -36,11 +36,11 @@ jobs:
 
     - name: Run Migrations
       run: |
-        docker-compose exec web python manage.py migrate
+        docker-compose exec -T web python manage.py migrate
 
     - name: Run Tests
       run: |
-        docker-compose exec web python manage.py test
+        docker-compose exec -T web python manage.py test
 
     - name: Shut down Docker Compose
       run: |

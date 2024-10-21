@@ -41,6 +41,8 @@ CACHES = {
     }
 }
 
+CACHE_TTL = 60 * 15
+
 AUTH_USER_MODEL = "users.CustomUser"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -61,6 +63,7 @@ ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    config("CODESPACES_URL"), # I'm using GitHub Codespaces for this project so I need to add this URL to the allowed origins
 ]
 
 # Application definition
@@ -169,6 +172,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

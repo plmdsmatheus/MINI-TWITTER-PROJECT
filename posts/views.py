@@ -6,6 +6,8 @@ from .models import Post, Like
 from .serializers import PostSerializer, LikeSerializer
 from rest_framework.pagination import PageNumberPagination
 from follows.models import Follow
+from django.core.cache import cache
+from django.conf import settings
 
 # Post list and create view
 class PostListCreateView(generics.ListCreateAPIView):
@@ -109,7 +111,15 @@ class UserFeedView(generics.ListAPIView):
     pagination_class = FeedPagination
 
     def get_queryset(self):
-        # Obtain the users that the current user is following
-        following_users = Follow.objects.filter(follower=self.request.user).value_list("following", flat=True)
-        # return the posts of the users that the current user is following in descending order of creation
-        return Post.objects.filter(user__in=following_users).order_by('-created_at')
+        user = self.request.user # Get the current user
+        cache_key = f'user_feed_{user.id}' # Cache key for the feed
+        feed = cache.get(cache_key) # Check if the feed is cached
+
+        if not feed: # If the feed is not cached
+            # Obtain the users that the current user is following
+            following_users = Follow.objects.filter(follower=user).values_list('following', flat=True)
+            # Obtain the posts of the users that the current user is following in descending order of creation
+            feed = Post.objects.filter(user__in=following_users).order_by('-created_at')
+            # Cache the feed
+            cache.set(cache_key, feed, timeout=CACHE_TTL)
+        return feed

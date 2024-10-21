@@ -5,6 +5,7 @@ from .serializers import FollowSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import PageNumberPagination
+from django.core.cache import cache
 
 # Paginated list of followers and following
 class FollowPagination(PageNumberPagination):
@@ -36,6 +37,8 @@ class FollowUserView(APIView):
         user_to_follow = CustomUser.objects.get(username=username)
         if request.user != user_to_follow:
             Follow.objects.get_or_create(follower=request.user, following=user_to_follow)
+            cache.delete(f'user_followers_count_{user_to_follow.id}')
+            cache.delete(f'user_following_count_{request.user.id}')
             return Response({'status': 'followed'})
         else:
             return Response({'status': 'You cannot follow yourself'})
@@ -43,6 +46,8 @@ class FollowUserView(APIView):
     def delete(self, request, username, *args, **kwargs):
         user_to_unfollow = CustomUser.objects.get(username=username)
         Follow.objects.filter(follower=request.user, following=user_to_unfollow).delete()
+        cache.delete(f'user_followers_count_{user_to_unfollow.id}')
+        cache.delete(f'user_following_count_{request.user.id}')
         return Response({'status': 'unfollowed'})
 
 # List all followers of a user

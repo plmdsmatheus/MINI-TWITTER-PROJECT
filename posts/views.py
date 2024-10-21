@@ -39,12 +39,13 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     Get a post by its id
 
     - Login is required
-    - Returns the id, user, content, image, and creation date of the post
+    - Only the post's author can view it
+    - Returns the id, user, content, creation date of the post, and the number of likes
 
     patch: 
     Edit a post by its id (partial update)
     
-    - Necessary fields: content, image
+    - Necessary fields: content
     - Login is required
     - Only the post's author can edit it
 
@@ -57,7 +58,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     put:
     Edit a post by its id (full update)
 
-    - Necessary fields: content, image
+    - Necessary fields: content
     - Login is required
     - Only the post's author can edit it
     """

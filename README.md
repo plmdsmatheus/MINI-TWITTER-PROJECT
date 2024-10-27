@@ -41,4 +41,9 @@ The API documentation is automatically generated and available at /swagger/. Thi
 
 ## Developer Notes
 
-- Tests are located in the tests/ directory and can be run using pytest.
+- Tests are located in the tests/ directory and can be run using django tests. `docker-compose exec web coverage run manage.py test` if you want report of tests execute this command: `docker-compose exec web coverage report`.
+
+## Documentation
+![diagram ERD](docs/ERD.png)
+
+![diagram of architecture](docs/architecture.png)

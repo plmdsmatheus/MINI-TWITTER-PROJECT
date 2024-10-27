@@ -11,7 +11,7 @@ class FollowIntegrationTest(APITestCase):
         self.user1 = CustomUser.objects.create_user(username='user1', password='password', email='user1@example.com')
         self.user2 = CustomUser.objects.create_user(username='user2', password='password', email='user2@example.com')
 
-    def test_authenticate_user(self, user):
+    def authenticate_user(self, user):
         refresh = RefreshToken.for_user(user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {str(refresh.access_token)}')
 

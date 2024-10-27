@@ -20,7 +20,7 @@ class PostModelTest(TestCase):
         post = Post.objects.create(user=self.user, content="Hello World")
         self.assertEqual(post.user, self.user)
 
-    def like_post(self):
+    def test_like_post(self):
         post = Post.objects.create(user=self.user, content="Hello World")
         post.likes.add(self.user)
         self.assertEqual(post.likes.count(), 1)
@@ -33,7 +33,7 @@ class PostAPITest(APITestCase):
         self.user = CustomUser.objects.create_user(username='user1', password='password', email="user3@exemple.com")
         self.client.login(username='user1', password='password')
 
-    def authenticate_user(self):
+    def test_authenticate_user(self):
         refresh = RefreshToken.for_user(self.user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {str(refresh.access_token)}')
 
